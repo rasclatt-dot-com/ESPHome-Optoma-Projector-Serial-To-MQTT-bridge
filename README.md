@@ -40,8 +40,13 @@ You will need the following components;
 
 - 1 x ESP32 module 
 - 1 x Serial (TTS) adaptor
+<img
+  src="https://github.com/rasclatt-dot-com/ESPHome-Optoma-Projector-Serial-To-MQTT-bridge/blob/64fcbee1bf13f65bc1f440fe4badb03ae9294f43/assets/Max232%20RS232%20TTL%20MAX232.png"
+  alt="Home Assistant Dashboard configuration"
+  title="Home Assistant Dashboard configuration"
+  style="display: inline-block; margin: 0 auto; width: 500px">
 
-This project was tested with an ESP-WROVER-dev board (too big for final box) and an M5Stack Stamp (tiny but needed a separate power regulator/ buck convertor so not practical. Finally settled on and M%Stack atom - as these are small, cheap and can be powered from USB-C port.
+This project was tested with a few different ESP32 boards  (ESP-WROVER-devkit-C board (too big for final box) and an M5Stack Stamp (tiny but needed a separate power regulator/ buck convertor so not practical). Finally settled on and M%Stack atom - as these are small, cheap and can be powered from USB-C port. You may need to change the GPIO pins in the config for other boards.
 
 - 
 
