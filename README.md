@@ -28,3 +28,20 @@ There is an option to configure the projector to start when the power to the pro
 
 # The setup.
 
+This project assumes you have installed the following;
+
+- Home Assistant (tested on Home Assistant OS version, on a RPi4)
+- MQTT broker (this uses the HAAOS MQTT integration.
+- ESPHome, used to configure the ESP32, and for Over The Air (OTA) updates to the code.
+
+## Bill of materials
+
+You will need the following components;
+
+- 1 x ESP32 module 
+- 1 x Serial (TTS) adaptor
+
+This project was tested with an ESP-WROVER-dev board (too big for final box) and an M5Stack Stamp (tiny but needed a separate power regulator/ buck convertor so not practical. Finally settled on and M%Stack atom - as these are small, cheap and can be powered from USB-C port.
+
+- 
+
