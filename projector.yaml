@@ -1,0 +1,98 @@
+esphome:
+  name: projector
+  includes:
+    - uart_read_line_sensor.h
+  # You need to add this file to your config/esphome directory for this to compile and work!
+
+esp32:
+  board: m5stack-atom
+  framework:
+    type: arduino
+
+logger:
+  level: VERBOSE #makes uart stream available in esphome logstream
+  baud_rate: 0 #disable logging over uart
+
+# uart set up: (may need to change these values based on your ESP32 dev board specs..
+uart:
+  id: uart_bus
+  tx_pin: 21
+  rx_pin: 25
+  baud_rate: 9600
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "<YOUR ESPHOME SPECIFIC API KEY>"
+
+ota:
+  password: "<YOUR ESPHOME SPECIFIC OTA KEY>"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  manual_ip:
+    static_ip: <YOUR IP>
+    gateway: <Your gateway IP>
+    subnet: <Your subnet mask>
+
+captive_portal:
+
+# update below with your MQTT broker and credentials...
+mqtt:
+  broker: <Your MQTT broker IP>
+  port: 1883
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+  topic_prefix: projector
+
+text_sensor:
+# This sets up the custom sensor to read UART (required for switch status)
+- platform: custom
+  lambda: |-
+    auto my_custom_sensor = new UartReadLineSensor(id(uart_bus));
+    App.register_component(my_custom_sensor);
+    return {my_custom_sensor};
+  text_sensors:
+    id: "uart_readline"
+
+binary_sensor:
+  # A "connected?" status sensor that - as long as sensor + mqtt + HA are working -
+  #   will always display "true". Allows for easy detection of sensor failure from HA
+  # See: https://esphome.io/components/binary_sensor/status.html
+  - platform: status
+    name: "Projector Status"
+    
+switch:
+  - platform: template
+    name: "Projector Power"
+    icon: "mdi:projector"
+# the lamda reads the status response defined in the interval below;
+# and is used to feed back the state of the switch to Home assistant
+    lambda: |-
+      if (id(uart_readline).state == "OK1") {
+        return true;
+      } else if(id(uart_readline).state == "OK2") {
+        return false;
+      } else {
+        return {};
+      }
+    turn_on_action:
+      - uart.write: [0x7E, 0x30, 0x30, 0x30, 0x30, 0x20, 0x32, 0x0D]
+    turn_off_action:
+      - uart.write: [0x7E, 0x30, 0x30, 0x30, 0x30, 0x20, 0x32, 0x0D]
+      - delay: 5s
+      - uart.write: [0x7E, 0x30, 0x30, 0x30, 0x30, 0x20, 0x32, 0x0D]
+
+interval:
+# I set this up for 20 seconds as the Optoma projector seems to get a 
+# bit confused when too many commands come in at once - and stops accepting
+# remote (IR) and Serial commands until the power is reset.
+# setting this for 20s reduces the chance of overlapping commands being sent
+# when sennding power on/ off commands from home assistant.
+  - interval: 20s
+    then:
+      - uart.write: [0x7E, 0x30, 0x30, 0x31, 0x32, 0x34, 0x20, 0x31, 0x0D]
+
+
