@@ -99,7 +99,7 @@ If in doubt/ commands not working try changing this setting first!
 Connection is pretty straight forward, plug the serial cable into the adaptor.
 
 <img
-  src="https://github.com/rasclatt-dot-com/ESPHome-Optoma-Projector-Serial-To-MQTT-bridge/blob/a2add88b63d268c78e9e68c2e3109f5118ffcc50/assets/MQTT%20view.png"
+  src="https://github.com/rasclatt-dot-com/ESPHome-Optoma-Projector-Serial-To-MQTT-bridge/blob/e54ede8d1789d1e28bcab44ca5ca86529715b698/assets/hd39hdrrear.jpg"
   alt="Serial adaptor to M5Stack Atom cabling"
   title="Serial adaptor to M5Stack Atom cabling"
   style="display: inline-block; margin: 0 auto; width: 400px">
