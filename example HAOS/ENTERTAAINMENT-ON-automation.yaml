@@ -1,0 +1,38 @@
+alias: Entertainment On
+description: ""
+# created a button in HAOS to use as trigger - you need to create
+# first annd update the entity-id "input_button.entertainment_on" 
+# with the id of your button. (see example button.YAML file in repo)
+trigger:
+  - platform: state
+    entity_id:
+      - input_button.entertainment_on
+# no connditions -
+# also may add some lighting controlls/ presence detection / 
+# based on time of day / ambient light sensor
+condition: []
+# The automation power cycles a power socket off then on to
+# trigger the projector to power on on - 
+# update to your entity ID of your power plug 
+action:
+  - type: turn_off
+    device_id: 486168f08b425b3dbb909bcc15dba7f9
+    entity_id: switch.switch_1
+    domain: switch
+  - service: media_player.turn_on
+    data: {}
+# power switch going back on to start projector - update to your entity/ device_id.
+target:
+      device_id: 24d78dc93e16b2d93034f8233f8a6de3
+  - type: turn_on
+    device_id: 486168f08b425b3dbb909bcc15dba7f9
+    entity_id: switch.switch_1
+    domain: switch
+# my automation selects media player channel - update with your device/ 
+# entity or remove
+  - service: media_player.select_source
+    data:
+      source: APPLE TV
+    target:
+      device_id: 24d78dc93e16b2d93034f8233f8a6de3
+mode: single
